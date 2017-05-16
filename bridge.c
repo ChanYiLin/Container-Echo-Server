@@ -133,6 +133,7 @@ int main(int argc, char *argv[])
 				//using ipc to communicate with server
 				//send message to server
 				msg.mtype = 1;
+				printf("send message: %s\n",msg.mtext);
 				rc = msgsnd(msgqid, &msg, sizeof(msg.mtext), 0);
 				if (rc < 0) {
 					perror( strerror(errno) );
