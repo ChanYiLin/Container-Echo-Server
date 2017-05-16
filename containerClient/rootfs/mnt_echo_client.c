@@ -35,11 +35,15 @@ int main(int argc, char *argv[])
 		printf("inotify_add_watch\n");
 		return 1;
 	}
-
+	int ret;
 	FILE *fp_c = fopen("/tmp/msg/client_message", "w");
 	char input[4096], ch;
 	while((ch = getchar()) != '\n'){
-		fputc(ch, fp_c);
+		ret = fputc(ch, fp_c);
+		if(ret < 0){
+			printf("put char error!");
+			perror(strerror(errno));
+		}
 		printf("receive char: %c\n",ch);
 	}
 	fputc('\n', fp_c);
