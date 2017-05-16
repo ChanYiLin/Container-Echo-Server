@@ -29,6 +29,20 @@
 int main(int argc, char *argv[])
 {
 
+	//./bridge /proc/containerA_PID/ns/ipc /proc/containerB_PID/ns/mnt
+	// A, server, use ipc
+	// B, client, use mnt
+ 
+
+	if(setns(open(argv[1],O_RDONLY),CLONE_NEWIPC)){
+		printf("setns server fail\n");
+		return 1;
+	}
+	if(setns(open(argv[2],O_RDONLY),CLONE_NEWNS)){
+		printf("setns client fail\n");
+		return 1;
+	}
+
 	system("rm -f /tmp/msg/server_msg");
 	system("rm -f /tmp/msg/bridge_msg");
 
