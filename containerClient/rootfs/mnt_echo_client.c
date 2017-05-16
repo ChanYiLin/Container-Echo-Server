@@ -36,6 +36,14 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
+	FILE *fp_c = fopen("/tmp/msg/client_message", "w");
+	char input[4096], ch;
+	while((ch = getchar()) != '\n'){
+		fputc(ch, fp_c);
+	}
+	fputc('\n', fp_c);
+	fclose(fp_c);
+
 	while(1){
 
 		// 1. send the message through writing to the client_message file
@@ -45,13 +53,6 @@ int main(int argc, char *argv[])
 		// 5. after detecting the closing of the bridge_message file then open, read and delete the file 
 		
 
-		FILE *fp_c = fopen("/tmp/msg/client_message", "w");
-		char input[4096], ch;
-		while((ch = getchar()) != '\n'){
-			fputc(ch, fp_c);
-		}
-		fputc('\n', fp_c);
-		fclose(fp_c);
 
 
 
@@ -83,6 +84,15 @@ int main(int argc, char *argv[])
 
 			p += sizeof(struct inotify_event) + event->len;
 		}
+
+		
+		FILE *fp_c = fopen("/tmp/msg/client_message", "w");
+		char input[4096], ch;
+		while((ch = getchar()) != '\n'){
+			fputc(ch, fp_c);
+		}
+		fputc('\n', fp_c);
+		fclose(fp_c);
 
 	}
 }
