@@ -18,7 +18,8 @@ int main(int argc, char *argv[])
 	char *p;
 	struct inotify_event *event;
 
-
+	system("rm -f client_message");
+	system("rm -f bridge_message");
 
 
 	inotifyFd = inotify_init();                 
@@ -44,7 +45,6 @@ int main(int argc, char *argv[])
 		char input[4096], ch;
 		while((ch = getchar()) != '\n'){
 			fputc(ch, fp_c);
-			printf("receive char: %c\n",ch);
 		}
 		fputc('\n', fp_c);
 		fclose(fp_c);
@@ -70,8 +70,9 @@ int main(int argc, char *argv[])
 				event = (struct inotify_event *) p;
 				if((event->mask|IN_CLOSE_WRITE) && !strcmp(event->name, "bridge_message")){
 
-					FILE *fp_b = fopen("bridge_message", "r");
 					char ch;
+					FILE *fp_b = fopen("bridge_message", "r");
+	
 
 					printf("Recv:");
 					while((ch = fgetc(fp_b)) != '\n')
@@ -90,8 +91,5 @@ int main(int argc, char *argv[])
 			if(flag==1)
 				break;
 		}
-
-
-
 	}
 }

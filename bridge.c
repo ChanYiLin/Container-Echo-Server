@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 
 
 
-	msgqid = msgget(MAGIC, 0);
+	msgqid = msgget(MAGIC, MSGPERM|IPC_CREAT);
 	if (msgqid < 0) {
 		perror(strerror(errno));
 		printf("failed to create message queue with msgqid = %d\n", msgqid);
@@ -109,24 +109,25 @@ int main(int argc, char *argv[])
 			event = (struct inotify_event *) p;
 
 			if((event->mask & IN_CLOSE_WRITE) && !strcmp(event->name, "client_message")){
-				FILE *fp_c ;
+
+				char ch;
+				int count = 0;
+				FILE *fp_c;
+
 				if((fp_c = fopen("client_message", "r"))==NULL){
 					printf("open file error!!\n");
 					return 1;
 				}
-				char ch;
-				int count = 0;
 
-				printf("Recv:");
 				while((ch = fgetc(fp_c)) != EOF){
 					client_bridge_buf[count++] = ch;
-					printf("%c", ch);
 				}
 				client_bridge_buf[count] = '\0';
+
 				fclose(fp_c);
 
 
-				printf("message read and send to server: %s\n",client_bridge_buf);
+				printf("message read from client and send to server: %s\n",client_bridge_buf);
 				strcpy(msg.mtext,client_bridge_buf);
 				system("rm -f client_message");
 
@@ -134,7 +135,6 @@ int main(int argc, char *argv[])
 				//send message to server
 				printf("send message: %s\n",msg.mtext);
 				msg.mtype = 1;
-				printf("send message: %s\n",msg.mtext);
 				rc = msgsnd(msgqid, &msg, sizeof(msg.mtext), 0);
 				if (rc < 0) {
 					perror( strerror(errno) );
@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
 					return 1;
 				} 
 
-				printf("Recv from server: %s\n",msg.mtext);
+				printf("message receive from server and send to client: %s\n",msg.mtext);
 				strcpy(server_bridge_buf, msg.mtext);
 				//finish the communication with server
 
