@@ -45,13 +45,13 @@ int main(int argc, char *argv[])
 		// 5. after detecting the closing of the bridge_message file then open, read and delete the file 
 		
 
-		FILE *fp = fopen("/tmp/msg/client_message", "w");
+		FILE *fp_c = fopen("/tmp/msg/client_message", "w");
 		char input[4096], ch;
 		while((ch = getchar()) != '\n'){
-			fputc(ch, fp);
+			fputc(ch, fp_c);
 		}
-		fputc('\n', fp);
-		fclose(fp);
+		fputc('\n', fp_c);
+		fclose(fp_c);
 
 
 
@@ -66,14 +66,16 @@ int main(int argc, char *argv[])
 			event = (struct inotify_event *) p;
 			if((event->mask|IN_CLOSE_WRITE) && !strcmp(event->name, "bridge_message")){
 
-				FILE *fp = fopen("/tmp/msg/bridge_message", "r");
+				FILE *fp_b = fopen("/tmp/msg/bridge_message", "r");
 				char ch;
 
 				printf("Recv:");
-				while((ch = fgetc(fp)) != '\n')
+				while((ch = fgetc(fp_b)) != '\n')
 					putchar(ch);
 				printf("\n");
+				fclose(fp_b);
 				system("rm -f /tmp/msg/bridge_message");
+
 
 				break;
 

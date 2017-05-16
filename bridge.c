@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	system("rm -f /tmp/msg/server_msg");
+	system("rm -f /tmp/msg/client_msg");
 	system("rm -f /tmp/msg/bridge_msg");
 
 	char client_bridge_buf[500];
@@ -104,12 +104,12 @@ int main(int argc, char *argv[])
 					printf("%c", ch);
 				}
 				client_bridge_buf[count] = '\0';
-				system("rm -f /tmp/msg/client_message");
+				fclose(fp_c);
 
 
 				printf("message read and send to server: %s\n",client_bridge_buf);
 				strcpy(msg.mtext,client_bridge_buf);
-
+				system("rm -f /tmp/msg/client_message");
 
 				//using ipc to communicate with server
 				//send message to server
