@@ -46,8 +46,8 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	system("rm -f /tmp/msg/client_msg");
-	system("rm -f /tmp/msg/bridge_msg");
+	system("rm -f client_message");
+	system("rm -f bridge_message");
 
 	char client_bridge_buf[500];
 	char server_bridge_buf[500];
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	wd = inotify_add_watch(inotifyFd, "/tmp/msg/", IN_CLOSE_WRITE);
+	wd = inotify_add_watch(inotifyFd, getcwd(NULL, 0), IN_CLOSE_WRITE);
 	if (wd == -1) {
 		perror(strerror(errno));
 		printf("inotify_add_watch\n");
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 
 			if((event->mask & IN_CLOSE_WRITE) && !strcmp(event->name, "client_message")){
 				FILE *fp_c ;
-				if((fp_c = fopen("/tmp/msg/client_message", "r"))==NULL){
+				if((fp_c = fopen("client_message", "r"))==NULL){
 					printf("open file error!!\n");
 					return 1;
 				}
@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 
 				printf("message read and send to server: %s\n",client_bridge_buf);
 				strcpy(msg.mtext,client_bridge_buf);
-				system("rm -f /tmp/msg/client_message");
+				system("rm -f client_message");
 
 				//using ipc to communicate with server
 				//send message to server
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
 				//finish the communication with server
 
 
-				FILE *fp_b = fopen("/tmp/msg/bridge_message", "w");
+				FILE *fp_b = fopen("bridge_message", "w");
 				fputs(server_bridge_buf, fp_b);
 				fclose(fp_b);
 				break;

@@ -29,14 +29,14 @@ int main(int argc, char *argv[])
 	}
 
 	//wahtch the change of file, fire a event if it changes then  getcwd get the path
-	wd = inotify_add_watch(inotifyFd, "/tmp/msg/", IN_CLOSE_WRITE);
+	wd = inotify_add_watch(inotifyFd, getcwd(NULL, 0), IN_CLOSE_WRITE);
 	if (wd == -1) {
 		perror(strerror(errno));
 		printf("inotify_add_watch\n");
 		return 1;
 	}
 	int ret;
-	FILE *fp_c = fopen("/tmp/msg/client_message", "w");
+	FILE *fp_c = fopen("client_message", "w");
 	char input[4096], ch;
 	while((ch = getchar()) != '\n'){
 		ret = fputc(ch, fp_c);
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 			event = (struct inotify_event *) p;
 			if((event->mask|IN_CLOSE_WRITE) && !strcmp(event->name, "bridge_message")){
 
-				FILE *fp_b = fopen("/tmp/msg/bridge_message", "r");
+				FILE *fp_b = fopen("bridge_message", "r");
 				char ch;
 
 				printf("Recv:");
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 					putchar(ch);
 				printf("\n");
 				fclose(fp_b);
-				system("rm -f /tmp/msg/bridge_message");
+				system("rm -f bridge_message");
 
 
 				break;
@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 		}
 
 		
-		FILE *fp_c = fopen("/tmp/msg/client_message", "w");
+		FILE *fp_c = fopen("client_message", "w");
 		char input[4096], ch;
 		while((ch = getchar()) != '\n'){
 			fputc(ch, fp_c);
