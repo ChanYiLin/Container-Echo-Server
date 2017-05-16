@@ -5,7 +5,7 @@
 // 2. send the message to server and receive the msg from server
 // 3. create the bridge_message file and write the message into it.
 // 4. after detecting the closing of the client_message file then open, read and delete the file
-
+#define _GNU_SOURCE
 #include <sys/inotify.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,6 +20,9 @@
 #include <sys/wait.h>
 #include <sys/errno.h>
 
+
+#include <sched.h>
+#include <fcntl.h>
 
 #include "msg_helper.h"
 
