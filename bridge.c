@@ -90,13 +90,19 @@ int main(int argc, char *argv[])
 			event = (struct inotify_event *) p;
 
 			if((event->mask & IN_CLOSE_WRITE) && !strcmp(event->name, "client_message")){
-				FILE *fp_c = fopen("/tmp/msg/client_message", "r");
+				FILE *fp_c ;
+				if((fp_c = fopen("/tmp/msg/client_message", "r"))==NULL){
+					printf("open file error!!\n");
+					return 1;
+				}
 				char ch;
 				int count = 0;
 
 				printf("Recv:");
-				while((ch = fgetc(fp_c)) != EOF)
+				while((ch = fgetc(fp_c)) != EOF){
 					client_bridge_buf[count++] = ch;
+					printf("%c", ch);
+				}
 				client_bridge_buf[count] = '\0';
 				system("rm -f /tmp/msg/client_message");
 
