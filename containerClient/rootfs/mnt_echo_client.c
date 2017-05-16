@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 	}
 
 	//wahtch the change of file, fire a event if it changes then  getcwd get the path
-	wd = inotify_add_watch(inotifyFd, "/tmp/msg/", IN_DELETE);
+	wd = inotify_add_watch(inotifyFd, "/tmp/msg/", IN_CLOSE_WRITE);
 	if (wd == -1) {
 		perror(strerror(errno));
 		printf("inotify_add_watch\n");
