@@ -46,8 +46,6 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	system("rm -f client_message");
-	system("rm -f bridge_message");
 
 
 	char client_bridge_buf[500];
