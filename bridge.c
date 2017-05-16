@@ -90,14 +90,14 @@ int main(int argc, char *argv[])
 			event = (struct inotify_event *) p;
 
 			if((event->mask & IN_CLOSE_WRITE) && !strcmp(event->name, "client_message")){
-				FILE *fp = fopen("/tmp/msg/client_message", "r");
+				FILE *fp_c = fopen("/tmp/msg/client_message", "r");
 				char ch;
 				int count = 0;
 
 				printf("Recv:");
-				while((ch = fgetc(fp)) != EOF)
+				while((ch = fgetc(fp_c)) != EOF)
 					client_bridge_buf[count++] = ch;
-				client_bridge_buf[count] = '\0'
+				client_bridge_buf[count] = '\0';
 				system("rm -f /tmp/msg/client_message");
 
 
@@ -127,9 +127,9 @@ int main(int argc, char *argv[])
 				//finish the communication with server
 
 
-				FILE *fp = fopen("/tmp/msg/bridge_message", "w");
-				fputs(server_bridge_buf, fp);
-				fclose(fp);
+				FILE *fp_b = fopen("/tmp/msg/bridge_message", "w");
+				fputs(server_bridge_buf, fp_b);
+				fclose(fp_b);
 				break;
 
 			}
