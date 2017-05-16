@@ -36,22 +36,6 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-
-
-	msgqid = msgget(MAGIC, 0);
-	if (msgqid < 0) {
-		perror(strerror(errno));
-		printf("failed to create message queue with msgqid = %d\n", msgqid);
-		return 1;
-	}
-
-	msgqid2 = msgget(MAGIC2, 0);
-	if (msgqid < 0) {
-		perror(strerror(errno));
-		printf("failed to create message queue with msgqid = %d\n", msgqid);
-		return 1;
-	}
-
 	while(1){
 
 		// 1. send the message through writing to the client_message file
