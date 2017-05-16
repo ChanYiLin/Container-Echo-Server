@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
 	char input[4096], ch;
 	while((ch = getchar()) != '\n'){
 		fputc(ch, fp_c);
+		printf("receive char: %c\n",ch);
 	}
 	fputc('\n', fp_c);
 	fclose(fp_c);
@@ -90,6 +91,7 @@ int main(int argc, char *argv[])
 		char input[4096], ch;
 		while((ch = getchar()) != '\n'){
 			fputc(ch, fp_c);
+			printf("receive char: %c\n",ch);
 		}
 		fputc('\n', fp_c);
 		fclose(fp_c);
