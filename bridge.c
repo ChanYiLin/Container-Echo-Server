@@ -134,6 +134,7 @@ int main(int argc, char *argv[])
 				//send message to server
 				printf("send message: %s\n",msg.mtext);
 				msg.mtype = 1;
+				printf("send message: %s\n",msg.mtext);
 				rc = msgsnd(msgqid, &msg, sizeof(msg.mtext), 0);
 				if (rc < 0) {
 					perror( strerror(errno) );

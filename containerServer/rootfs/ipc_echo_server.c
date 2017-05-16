@@ -35,6 +35,7 @@ int main(int argc,char **argv)
 	while(1){
 
 		//receive message  from bridge
+		msg.mtype = 0;
 		rc = msgrcv(msgqid, &msg, sizeof(msg.mtext), 0, 0); 
 		if (rc < 0) {
 			perror( strerror(errno) );
@@ -44,6 +45,7 @@ int main(int argc,char **argv)
 		printf("Recv from bridge: %s\n",msg.mtext);
 
 		//send message to bridge
+		msg.mtype = 1;
 		rc = msgsnd(msgqid2, &msg, sizeof(msg.mtext), 0);
 		if (rc < 0) {
 			perror( strerror(errno) );
