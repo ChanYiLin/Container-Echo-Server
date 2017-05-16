@@ -132,13 +132,14 @@ int main(int argc, char *argv[])
 
 				//using ipc to communicate with server
 				//send message to server
+				msg.mtype = 1;
 				rc = msgsnd(msgqid, &msg, sizeof(msg.mtext), 0);
 				if (rc < 0) {
 					perror( strerror(errno) );
 					printf("msgsnd failed, rc = %d\n", rc);
 					return 1;
 				}
-
+				msg.mtype = 0;
 				//message receive from server
 				rc = msgrcv(msgqid2, &msg, sizeof(msg.mtext), 0, 0); 
 				if (rc < 0) {
