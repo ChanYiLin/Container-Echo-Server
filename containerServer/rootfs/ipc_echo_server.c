@@ -22,7 +22,7 @@ int main(int argc,char **argv)
 		return 1;
 	}
 
-	msgqid2 = msgget(MAGIC2, MSGPERM|IPC_CREAT);
+	msgqid2 = msgget(MAGIC2, 0);
 	if (msgqid < 0) {
 		perror(strerror(errno));
 		printf("failed to create message queue with msgqid = %d\n", msgqid);

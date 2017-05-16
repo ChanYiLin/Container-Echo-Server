@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
 	system("rm -f client_message");
 	system("rm -f bridge_message");
 
+
 	char client_bridge_buf[500];
 	char server_bridge_buf[500];
 
@@ -74,6 +75,24 @@ int main(int argc, char *argv[])
 		printf("inotify_add_watch\n");
 		return 1;
 	}
+
+
+
+
+	msgqid = msgget(MAGIC, 0);
+	if (msgqid < 0) {
+		perror(strerror(errno));
+		printf("failed to create message queue with msgqid = %d\n", msgqid);
+		return 1;
+	}
+
+	msgqid2 = msgget(MAGIC2, MAGIC, MSGPERM|IPC_CREAT);
+	if (msgqid < 0) {
+		perror(strerror(errno));
+		printf("failed to create message queue with msgqid = %d\n", msgqid);
+		return 1;
+	}
+
 
 	while(1) {
 		memset(client_bridge_buf, '\0', sizeof(client_bridge_buf));
