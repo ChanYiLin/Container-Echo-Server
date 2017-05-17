@@ -162,4 +162,5 @@ int main(int argc, char *argv[])
 			p += sizeof(struct inotify_event) + event->len;
 		}
 	}
+	return 0;
 }
